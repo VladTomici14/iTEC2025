@@ -8,14 +8,32 @@ class ChatGPTIntegration:
     def __init__(self):
         self.agent_description = ""
         self.client = OpenAI(api_key=OPENAI_API_KEY)
-        self.agent_description = "You are a specialized artificial intelligence assistant designed to analyze brain MRI scans with a focus on tumor detection, classification, and interpretation. Combining deep learning with medical doctrine, you deliver accurate, explainable assessments for both healthcare professionals and informed non-specialists. The system supports multimodal inputs—including imaging, text, and patient data—and offers visual explanations (e.g., heatmaps) to enhance clinical trust. NeuroSight references established medical standards (e.g., WHO CNS tumor classifications, RANO criteria) and adapts its communication style to suit either clinical or lay audiences. Ethically built for fairness, transparency, and data privacy, it aims to empower early diagnosis, streamline workflows, and improve access to equitable, AI-enhanced neurocare."
+        # self.agent_description = (
+        #     "You are a specialized artificial intelligence assistant designed to analyze brain MRI scans with a focus on tumor detection, classification, and interpretation. "
+        #     "Combining deep learning with medical doctrine, you deliver accurate, explainable assessments for both healthcare professionals and informed non-specialists. "
+        #     "The system supports multimodal inputs—including imaging, text, and patient data—and offers visual explanations (e.g., heatmaps) to enhance clinical trust. "
+        #     "You're referencing established medical standards (e.g., WHO CNS tumor classifications, RANO criteria) and adapts its communication style to suit either clinical or lay audiences."
+        #     " Ethically built for fairness, transparency, and data privacy, it aims to empower early diagnosis, streamline workflows, and improve access to equitable, AI-enhanced neurocare."
+        #     "Write your responses in paragraphs, and use bullet points for lists."
+        #     "Don't refer to yourself as an AI or a chatbot. "
+        # )
 
-    def get_response(self, patient_data, model_results, query):
+        self.agent_description = (
+            "You are, an intelligent assistant specializing in brain MRI analysis and tumor identification. "
+            "You provide clear, medically-informed insights based on image analysis and patient messages. "
+            "Your tone adapts to your audience: for medical professionals, you use concise clinical language; "
+            "for patients, you explain findings simply, without causing alarm. Avoid unnecessary repetition. "
+            "Be accurate, respectful, and to the point. If asked follow-up questions or casual prompts, respond briefly and informatively. "
+            "You are here to assist, not to replace a medical diagnosis. Do not exaggerate findings or speculate beyond the data provided."
+            "Don't use any salutations and don't refer to the user as 'user'."
+        )
+
+    def get_response(self, user_message, parsed_files):
         """
         Get insights from ChatGPT based on patient data and model results
         """
         # Format the prompt with relevant information
-        prompt = self._format_prompt(patient_data, model_results, query)
+        prompt = self._format_prompt(user_message, parsed_files)
 
         # Call the API
         response = self.client.chat.completions.create(
@@ -30,22 +48,39 @@ class ChatGPTIntegration:
         )
         return response.choices[0].message.content
 
-    def _format_prompt(self, patient_data, model_results, query):
+    def _format_prompt(self, user_message, parsed_files):
         # Create a structured prompt with all relevant information
-        prompt = f"""
-            Patient Information:
-            {patient_data}
 
-            Brain Tumor Detection Results:
-                - Detection: {model_results['detection']}
-                - Location: {model_results['location']}
-                - Confidence: {model_results['confidence']}%
+        file_descriptions = []
 
-            Medical Query: {query}
-    
-        Provide analysis based on these findings.
-        """
-        
+        for file in parsed_files:
+            filename = file.get("filename", "Unnamed file")
+            is_mri = file.get("is_mri", False)
+            has_tumor = file.get("has_tumor", False)
+
+            if not is_mri:
+                file_descriptions.append(f"- '{filename}' is **not** identified as a brain MRI scan.")
+            else:
+                tumor_info = "shows signs of a brain tumor." if has_tumor else "does not show signs of a tumor."
+                file_descriptions.append(f"- '{filename}' is a brain MRI and {tumor_info}")
+
+        file_summary = "\n".join(file_descriptions)
+
+        if len(file_summary):
+            prompt = (
+                f"User message:\n{user_message}\n\n"
+                f"Image analysis summary:\n{file_summary}\n\n"
+                f"Respond with clear, useful insights based on the message and the MRI findings. "
+                f"Only include relevant medical interpretation. Avoid long introductions or repeating what was already said. "
+                f"If the user is asking a follow-up or informal question, answer briefly and stay helpful."
+            )
+        else:
+            prompt = (
+                f"User message:\n{user_message}\n\n"
+                f"Respond with clear, useful insights based on the message and the MRI findings. "
+                f"Only include relevant medical interpretation. Avoid long introductions or repeating what was already said. "
+                f"If the user is asking a follow-up or informal question, answer briefly and stay helpful."
+            )
         return prompt
 
 

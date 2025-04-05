@@ -63,21 +63,19 @@ def chat():
         f.save(path)
         saved_files.append(current_file)
 
-    # Use dummy data for now
-    patient_data = {
-        "patient_id": "P12345",
-        "age": 45,
-        "gender": "Female",
-        "medical_history": "N/A",
-        "previous_treatments": "N/A"
-    }
-    model_results = {
-        "detection": "Unknown",
-        "location": "N/A",
-        "confidence": 0
+    gpt_context = {
+        "user_message": message,
+        "files_summary": [
+            {
+                "filename": os.path.basename(file.base_path),
+                "is_mri": file.isMri,
+                "has_tumor": file.hasTumor
+            }
+            for file in saved_files
+        ]
     }
 
-    response = chatgpt.get_response(patient_data, model_results, message)
+    response = chatgpt.get_response(gpt_context["user_message"], gpt_context["files_summary"])
 
     return jsonify({"message": response})
 
