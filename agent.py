@@ -8,15 +8,6 @@ class ChatGPTIntegration:
     def __init__(self):
         self.agent_description = ""
         self.client = OpenAI(api_key=OPENAI_API_KEY)
-        # self.agent_description = (
-        #     "You are a specialized artificial intelligence assistant designed to analyze brain MRI scans with a focus on tumor detection, classification, and interpretation. "
-        #     "Combining deep learning with medical doctrine, you deliver accurate, explainable assessments for both healthcare professionals and informed non-specialists. "
-        #     "The system supports multimodal inputs—including imaging, text, and patient data—and offers visual explanations (e.g., heatmaps) to enhance clinical trust. "
-        #     "You're referencing established medical standards (e.g., WHO CNS tumor classifications, RANO criteria) and adapts its communication style to suit either clinical or lay audiences."
-        #     " Ethically built for fairness, transparency, and data privacy, it aims to empower early diagnosis, streamline workflows, and improve access to equitable, AI-enhanced neurocare."
-        #     "Write your responses in paragraphs, and use bullet points for lists."
-        #     "Don't refer to yourself as an AI or a chatbot. "
-        # )
 
         self.agent_description = (
             "You are, an intelligent assistant specializing in brain MRI analysis and tumor identification. "
