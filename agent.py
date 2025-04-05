@@ -24,7 +24,7 @@ class ChatGPTIntegration:
                  "content": "You are a medical assistant specialized in brain tumor analysis."},
                 {"role": "user", "content": prompt}
             ],
-            temperature=0.3 # Lower temperature for more focused medical responses)
+            temperature=0.3  # Lower temperature for more focused medical responses)
         )
         return response.choices[0].message.content
 
@@ -46,9 +46,13 @@ class ChatGPTIntegration:
         return prompt
 
 
+
 if __name__ == "__main__":
-    chatgpt = ChatGPTIntegration(
-        "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")
+    api_key = "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"
+
+    chatgpt = ChatGPTIntegration(api_key=api_key)
+
+
 
     query = "What are the potential implications of this tumor location and what additional tests might be recommended?"
 
