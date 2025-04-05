@@ -1,0 +1,48 @@
+<div class="results-container">
+  <h2>Analysis Results</h2>
+
+  <div class="result-status" [ngClass]="{ positive: results.detection === 'Positive' }">
+    <div class="status-icon">
+      <svg *ngIf="results.detection === 'Positive'" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+           viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+           stroke-linejoin="round">
+        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+      </svg>
+      <svg *ngIf="results.detection === 'Negative'" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+           viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+           stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"></circle>
+        <path d="M8 12h8"></path>
+      </svg>
+    </div>
+    <div class="status-text">{{ results.detection }} for Tumor</div>
+  </div>
+
+  <div class="results-details">
+    <div class="result-item">
+      <div class="result-label">Confidence:</div>
+      <div class="result-value">
+        <div class="confidence-bar">
+          <div class="confidence-fill" [style.width.%]="results.confidence"></div>
+        </div>
+        <span>{{ results.confidence }}%</span>
+      </div>
+    </div>
+
+    <div class="result-item">
+      <div class="result-label">Location:</div>
+      <div class="result-value">{{ results.location }}</div>
+    </div>
+
+    <div class="result-item">
+      <div class="result-label">Size:</div>
+      <div class="result-value">{{ results.size }}</div>
+    </div>
+
+    <div class="result-item">
+      <div class="result-label">Characteristics:</div>
+      <div class="result-value">{{ results.characteristics }}</div>
+    </div>
+  </div>
+</div>

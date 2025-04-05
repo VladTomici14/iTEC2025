@@ -1,0 +1,20 @@
+<div class="app-container">
+  <header class="app-header">
+    <h1>Brain Tumor Analysis Assistant</h1>
+  </header>
+
+  <div class="main-content">
+    <div class="left-panel">
+      <app-patient-info (patientSubmitted)="onPatientInfoSubmitted($event)"></app-patient-info>
+      <app-image-upload
+        [patientId]="currentPatient?.patientId"
+        (analysisComplete)="onAnalysisComplete($event)">
+      </app-image-upload>
+    </div>
+
+    <div class="right-panel">
+      <app-results *ngIf="analysisResults" [results]="analysisResults"></app-results>
+      <app-chat [patientId]="currentPatient?.patientId" [analysisResults]="analysisResults"></app-chat>
+    </div>
+  </div>
+</div>
