@@ -1,8 +1,7 @@
 
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {CommonModule, NgOptimizedImage} from '@angular/common';
 import { ChatComponent } from './components/chat/chat.component';
-import { PatientInfoComponent } from './components/patient-info/patient-info.component';
 import { ResultsComponent } from './components/results/results.component';
 
 @Component({
@@ -12,7 +11,6 @@ import { ResultsComponent } from './components/results/results.component';
   imports: [
     CommonModule,
     ChatComponent,
-    PatientInfoComponent,
     ResultsComponent,
   ],
 })

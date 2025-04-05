@@ -9,9 +9,15 @@
   padding: 1rem;
 }
 
+
+.logo-img {
+  height: 80px;
+  object-fit: contain;
+}
+
 .header {
-  background-color: #000; /* black background */
-  padding: 10px 0;
+  background-color: #171717;
+  padding: 20px 0;
 }
 
 .navbar {
@@ -19,9 +25,6 @@
   align-items: center;
 }
 
-.logo-img {
-  height: 40px;
-}
 
 .app-header {
   background-color: #2c3e50;
