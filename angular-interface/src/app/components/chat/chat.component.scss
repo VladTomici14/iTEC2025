@@ -1,7 +1,10 @@
 .chat-container {
   display: flex;
+
+  background-color: white;
   flex-direction: column;
-  height: 500px;
+  width: 1000px;
+  height: 600px;
   border: 1px solid #ccc;
   border-radius: 8px;
   padding: 16px;
@@ -25,6 +28,11 @@
 
 .chat-input {
   display: flex;
+
+  input {
+    border: 2px solid black;
+  }
+
   gap: 10px;
 }
 
@@ -35,4 +43,46 @@
 
 .chat-input button {
   padding: 8px 16px;
+}
+
+
+.image-upload-container {
+  margin-bottom: 16px;
+}
+
+.upload-zone {
+  border: 2px dashed #ccc;
+  padding: 20px;
+  text-align: center;
+  border-radius: 8px;
+  transition: 0.2s all;
+}
+
+.upload-zone.active {
+  border-color: #0d6efd;
+  background-color: #f0f8ff;
+}
+
+.upload-zone.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.selected-file {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.file-preview img {
+  max-height: 80px;
+  border-radius: 8px;
+}
+
+.file-info {
+  margin-left: 16px;
+}
+
+.file-actions button {
+  margin-left: 10px;
 }
