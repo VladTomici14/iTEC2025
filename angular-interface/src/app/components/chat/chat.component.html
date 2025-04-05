@@ -6,8 +6,22 @@
     </div>
   </div>
 
-  <form (ngSubmit)="sendMessage()" class="chat-input">
-    <input [(ngModel)]="userInput" name="message" placeholder="Type your message..." required />
+  <form (ngSubmit)="sendMessage()" enctype="multipart/form-data" class="chat-input">
+    <input
+      type="text"
+      [(ngModel)]="userInput"
+      name="message"
+      placeholder="Type your message..."
+      required
+    />
+
+    <input
+      type="file"
+      name="file"
+      (change)="onFileSelected($event)"
+      multiple
+    />
+
     <button type="submit">Send</button>
   </form>
 </div>

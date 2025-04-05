@@ -14,7 +14,7 @@
 
     <div class="right-panel">
       <app-results *ngIf="analysisResults" [results]="analysisResults"></app-results>
-      <app-chat [patientId]="currentPatient?.patientId" [analysisResults]="analysisResults"></app-chat>
+      <app-chat patientId="currentPatient?.patientId" analysisResults="analysisResults"></app-chat>
     </div>
   </div>
 </div>

@@ -2,7 +2,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from agent import ChatGPTIntegration
-
+import os
 app = Flask(__name__)
 CORS(app, resources={r"/api/*": {"origins": "http://localhost:4200"}})
 
@@ -11,16 +11,40 @@ api_key = "sk-proj-CARTpyLUnLXFK3yM2yMqpYDrN5kwHdaAMDLRcELdl7RcVcw4zIgvbwnO0MD2m
 chatgpt = ChatGPTIntegration(api_key)
 @app.route("/api/chat", methods=["POST"])
 def chat():
-    data = request.json
-    patient_data = data.get("patientData")
-    model_results = data.get("modelResults")
-    query = data.get("message")
+    message = request.form.get('message')
+    files = request.files.getlist('files')
 
-    try:
-        response = chatgpt.get_response(patient_data, model_results, query)
-        return jsonify({"message": response})
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    saved_files = []
+    for f in files:
+        path = os.path.join("./uploads", f.filename)
+        f.save(path)
+        saved_files.append(path)
+
+    print("User message:", message)
+    print("Received files:", [f.filename for f in files])
+    saved_files = []
+    for f in files:
+        path = f"./uploads/{f.filename}"  # Make sure 'uploads/' exists
+        f.save(path)
+        saved_files.append(path)
+
+    # Use dummy data for now
+    patient_data = {
+        "patient_id": "P12345",
+        "age": 45,
+        "gender": "Female",
+        "medical_history": "N/A",
+        "previous_treatments": "N/A"
+    }
+    model_results = {
+        "detection": "Unknown",
+        "location": "N/A",
+        "confidence": 0
+    }
+
+    response = chatgpt.get_response(patient_data, model_results, message)
+
+    return jsonify({"message": response})
 
 if __name__ == "__main__":
     app.run(port=3000)
