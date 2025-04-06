@@ -38,19 +38,13 @@ def chat():
         currentMri = False
         currentTumor = False
 
-
         # verifying if the parsed file is an image
         if fileProcessing.isImage(path):
+            currentTumor = brainTumor.hasBrainTumor(path)
             currentMri = mri.isMRI(path)
-            if currentMri:
-                currentTumor = brainTumor.hasBrainTumor(path)
-            else:
-                # the parsed image is not an mri
-                pass
         else:
-            # the file is not an image, so we can't do much
-            # We can either skip it or handle it differently
-            pass
+            currentTumor = False
+            currentMri = False
 
         current_file = FileStructure(base_path=path,
                                      isMri=currentMri,

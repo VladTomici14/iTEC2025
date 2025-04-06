@@ -3,6 +3,16 @@
     <div *ngFor="let msg of messages" [ngClass]="msg.sender">
       <strong>{{ msg.sender === 'doctor' ? 'User' : 'Assistant' }}: </strong>
       <span>{{ msg.text }}</span>
+
+      <!-- Display images under user messages -->
+      <div *ngIf="msg.sender === 'doctor' && msg.images && msg.images.length > 0" class="message-images">
+        <div class="image-grid">
+          <div *ngFor="let image of msg.images" class="image-item">
+            <img [src]="image.url" [alt]="image.name || 'Uploaded MRI'" class="message-image">
+          </div>
+<!--            <span class="image-name">{{ image.name }}</span>-->
+        </div>
+      </div>
     </div>
   </div>
 
@@ -16,25 +26,25 @@
       (drop)="onDrop($event)"
     >
       <ng-container *ngIf="!isUploading">
-      <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-        <polyline points="17 8 12 3 7 8"></polyline>
-        <line x1="12" y1="3" x2="12" y2="15"></line>
-      </svg>
-      <p>Drag & drop MRI images here or</p>
-      <input
-        type="file"
-        id="fileInput"
-        accept="image/*"
-        (change)="onFileSelected($event)"
-        [disabled]="!patientId"
-        multiple
-      >
-      <label for="fileInput" [class.disabled]="!patientId">
-        Browse Files
-      </label>
-      <p *ngIf="!patientId" class="warning">Please enter patient information first</p>
-    </ng-container>
+        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+          <polyline points="17 8 12 3 7 8"></polyline>
+          <line x1="12" y1="3" x2="12" y2="15"></line>
+        </svg>
+        <p>Drag & drop MRI images here or</p>
+        <input
+          type="file"
+          id="fileInput"
+          accept="image/*"
+          (change)="onFileSelected($event)"
+          [disabled]="!patientId"
+          multiple
+        >
+        <label for="fileInput" [class.disabled]="!patientId">
+          Browse Files
+        </label>
+        <p *ngIf="!patientId" class="warning">Please enter patient information first</p>
+      </ng-container>
 
       <!-- Show previews for selected files -->
       <ng-container *ngIf="selectedFiles.length && !isUploading">
@@ -51,7 +61,6 @@
           </div>
         </div>
       </ng-container>
-
 
       <div *ngIf="isUploading" class="upload-progress">
         <div class="spinner"></div>
