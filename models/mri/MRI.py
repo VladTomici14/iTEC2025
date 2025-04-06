@@ -5,7 +5,8 @@ import numpy as np
 
 class MRIModel:
     def __init__(self):
-        self.model = tf.keras.models.load_model("models/mri/trained-models/mac-model.h5")
+        # self.model = tf.keras.models.load_model("models/mri/trained-models/mac-model.h5")
+        self.model = tf.keras.models.load_model("models/mri/trained-models/final_brain_mri_classifier_model.h5")
         self.CLASSES = ["No_MRI", "MRI"]
 
     def preprocess(self, input_image):
@@ -23,7 +24,8 @@ class MRIModel:
 
         prediction = self.model.predict(preprocessed_image)
 
-        return self.CLASSES[np.argmax(prediction, axis=1)[0]]
+        return self.CLASSES[int(prediction[0][0])]
+        # return self.CLASSES[np.argmax(prediction, axis=1)[0]]
 
     def isMRI(self, filepath):
         if self.predict(filepath) == "MRI":
